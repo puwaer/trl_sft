@@ -44,6 +44,12 @@ conda deactivate
 
 ---
 
+## モデルの準備
+
+`model` フォルダの中に、学習させたいモデルを配置してください。
+
+---
+
 ## トレーニング実行
 
 ### 1. 通常のトレーニング
@@ -63,7 +69,22 @@ python src/train.py \
     --output_dir results/
 ```
 
-### 2. Weights & Biases (WandB)を使ったチャットトレーニング
+### 2. chat_templateを使ったチャットトレーニング
+`src/train_chat.py` では以下の `chat_template` が使用されています。
+
+```python
+chat_template = (
+    "{{bos_token}}{% for message in messages %}"
+    "{% if message['role'] == 'user' %}{{ '\n\n### 指示:\n' + message['content'] }}"
+    "{% elif message['role'] == 'system' %}{{ '以下は、タスクを説明する指示です。要求を適切に満たす応答を書きなさい。' }}"
+    "{% elif message['role'] == 'assistant' %}{{ '\n\n### 応答:\n' + message['content'] + eos_token }}"
+    "{% endif %}"
+    "{% if loop.last and add_generation_prompt %}{{ '\n\n### 応答:\n' }}{% endif %}"
+    "{% endfor %}"
+)
+```
+
+実行コマンド例:
 ```bash
 python src/train_chat.py \
     --num_train_epochs 1 \
@@ -83,4 +104,5 @@ python src/train_chat.py \
 ```
 
 ---
+
 

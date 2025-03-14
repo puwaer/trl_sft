@@ -1,0 +1,13 @@
+numpy==1.26.4
+torch==2.6.0
+transformers==4.49.0
+tokenizers==0.21.0
+accelerate==1.4.0
+trl==0.15.2
+peft==0.14.0
+sentencepiece==0.2.0
+wandb
+deepspeed==0.16.4
+bitsandbytes==0.45.3
+scipy==1.15.2
+
